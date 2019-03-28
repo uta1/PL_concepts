@@ -1,0 +1,61 @@
+PRINT 1
+IN
+CALL 10
+PRINT 3
+OUT
+AND
+
+: 10
+
+PUSH RAX
+POP S
+PUSH RBX
+CMP RBX 0
+JE 100
+CMP RBX 1
+JE 100
+
+PUSH RBX
+POP RAX
+POP RBX
+PUSH S -1
+ADD
+
+CALL 10
+
+PUSH RAX
+POP S
+PUSH RBX
+POP S
+PUSH RCX
+POP S
+POP RAX
+POP RBX
+POP RCX
+
+PUSH S -2
+ADD
+
+CALL 10
+
+PUSH RAX 
+POP S 
+PUSH RBX 
+POP S 
+PUSH RCX 
+POP S 
+POP RAX 
+POP RCX 
+ADD
+POP RBX 
+RET
+
+: 100
+
+POP S 
+PUSH S 1
+POP RAX 
+RET 
+
+. str 1 "Здравствуйте! Введите число n, и я посчитаю Вам n-ое число Фибоначчи. n: "
+. str 3 "Ответ - "
