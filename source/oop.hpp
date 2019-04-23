@@ -1,17 +1,17 @@
 #include <map>
-#include <set>
 #include <string>
-#include <iostream>
 #include <functional>
-#include <typeinfo>
-#include <vector>
+#include <stack>
 
-using namespace std;
+using std::unordered_map;
+using std::string;
+using std::function;
+using std::stack;
+using std::bad_function_call;
 
 class VitualClassParent{
   protected:
-    bool deleted_already = false;
-    vector<function<void(VitualClassParent*)>> destructors;
+    stack<function<void(VitualClassParent*)>> destructors;
     unordered_map<string, function<void(VitualClassParent*)>> virtual_funcs_;
 };
 
@@ -41,14 +41,12 @@ class VitualClassParent{
                 class_name* obj_ptr = reinterpret_cast<class_name*>(arg);   \
                 realization;    \
             };  \
-        destructors.push_back(current_destructor); \
+        destructors.push(current_destructor); \
     }   \
     ~class_name() { \
-        if (!deleted_already) { \
-            for (int i = destructors.size() - 1; i >= 0; --i) {  \
-                destructors[i](this);   \
-            }   \
-            deleted_already = true; \
+        while (!destructors.empty()) {  \
+            destructors.top()(this);    \
+            destructors.pop();  \
         }   \
     }
 
